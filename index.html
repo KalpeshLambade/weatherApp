@@ -2,8 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./style/style.css" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <link
+      rel="stylesheet"
+      href="./style/style.css"
+    />
     <title>Weather App</title>
   </head>
   <body>
@@ -35,7 +41,15 @@
                 id="city-input"
                 placeholder="Search any city"
               />
-              <input type="submit" id="search-button" value="Search">
+              <select id="unit">
+                <option value="metric">°C</option>
+                <option value="imperial">°F</option>
+              </select>
+              <input
+                type="submit"
+                id="search-button"
+                value="Search"
+              />
             </form>
           </div>
           <!-- end of city data -->
@@ -52,50 +66,89 @@
             <p>Wind speed</p>
             <p id="wind-speed-result">7.2 km/hrs</p>
           </div>
+          <div class="wheather-info-temp">
+            <p>Weather Description</p>
+            <p id="weather-description"></p>
+          </div>
         </div>
       </div>
     </div>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        function fetchWeatherData(city) {
-          const APIkey = "68ff20cdd3f397ada4d2f006b8577eb9"; 
-          const searchurl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIkey}&units=metric`;
+        function fetchWeatherData(city, unit) {
+          const APIkey = "68ff20cdd3f397ada4d2f006b8577eb9";
+          const searchurl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIkey}&units=${unit}`;
 
           const xhr = new XMLHttpRequest();
           xhr.open("GET", searchurl, true);
 
           xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-              const data = JSON.parse(xhr.responseText);
-              document.getElementById("city-name").textContent = data.name;
-              document.getElementById("country").textContent = data.sys.country;
-              document.getElementById("temperature").textContent =
-                data.main.temp + "°C";
-              document.getElementById("date-time").textContent =
-                new Date().toLocaleString();
-              document.getElementById("current-temp").textContent =
-                data.main.temp + "°C";
-              document.getElementById("temperature-result").textContent =
-                data.main.temp + "°C";
-              document.getElementById("humidity-result").textContent =
-                data.main.humidity + "%";
-              document.getElementById("wind-speed-result").textContent =
-                data.wind.speed + " km/h";
+            if (xhr.readyState === 4) {
+              if (xhr.status === 200) {
+                const data = JSON.parse(xhr.responseText);
+
+                // Display the city name and country
+                document.getElementById("city-name").textContent =
+                  data.name;
+                document.getElementById("country").textContent =
+                  data.sys.country;
+
+                // Display the temperature
+                document.getElementById("temperature").textContent =
+                  data.main.temp + (unit === "metric" ? "°C" : "°F");
+
+                // Display the weather description
+                const weatherDescription = data.weather[0].description;
+                document.getElementById("weather-description").textContent =
+                  weatherDescription;
+
+                // Display the date and time
+                document.getElementById("date-time").textContent =
+                  new Date().toLocaleString();
+
+                // Display additional weather data
+                document.getElementById("current-temp").textContent =
+                  data.main.temp + (unit === "metric" ? "°C" : "°F");
+                document.getElementById("temperature-result").textContent =
+                  data.main.temp + (unit === "metric" ? "°C" : "°F");
+                document.getElementById("humidity-result").textContent =
+                  data.main.humidity + "%";
+                document.getElementById("wind-speed-result").textContent =
+                  data.wind.speed + " km/h";
+              } else {
+                // Handle errors here
+                const errorMessage = `Error: ${xhr.status} - ${xhr.statusText}`;
+                document.getElementById("city-name").textContent = "Error";
+                document.getElementById("country").textContent = errorMessage;
+                document.getElementById("temperature").textContent = "";
+                document.getElementById("weather-description").textContent =
+                  "";
+                document.getElementById("date-time").textContent = "";
+                document.getElementById("current-temp").textContent = "";
+                document.getElementById("temperature-result").textContent =
+                  "";
+                document.getElementById("humidity-result").textContent = "";
+                document.getElementById("wind-speed-result").textContent =
+                  errorMessage;
+              }
             }
           };
 
           xhr.send();
         }
 
-        fetchWeatherData("Pune");
+        fetchWeatherData("Pune", "metric");
 
+        document
+          .getElementById("search-form")
+          .addEventListener("submit", function (event) {
+            event.preventDefault();
+            const city = document.getElementById("city-input").value;
+            const unit = document.getElementById("unit").value;
 
-        document.getElementById("search-form").addEventListener("submit", function (event) {
-          event.preventDefault(); 
-          const city = document.getElementById("city-input").value;
-          fetchWeatherData(city);
-        });
+            fetchWeatherData(city, unit);
+          });
       });
     </script>
   </body>

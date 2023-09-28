@@ -98,7 +98,7 @@
 .wheather-input {
     /* border: 1px solid black; */
     display: flex;
-    height: 20%;
+    height: 30%;
     width: 85%;
     margin: auto;
     border-radius: 15px;
@@ -106,6 +106,12 @@
     justify-content: space-evenly;
     align-items: center;
 
+}
+
+#unit{
+    width: 20%;
+    margin: 0 40%;
+    margin-top: 20px;
 }
 
 .wheather-input input {
