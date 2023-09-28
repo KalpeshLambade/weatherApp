@@ -58,9 +58,8 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // Function to fetch weather data using AJAX
         function fetchWeatherData(city) {
-          const APIkey = "68ff20cdd3f397ada4d2f006b8577eb9"; // Replace with your OpenWeatherMap API key
+          const APIkey = "68ff20cdd3f397ada4d2f006b8577eb9"; 
           const searchurl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIkey}&units=metric`;
 
           const xhr = new XMLHttpRequest();
@@ -75,8 +74,6 @@
                 data.main.temp + "°C";
               document.getElementById("date-time").textContent =
                 new Date().toLocaleString();
-
-              // Update the correct elements
               document.getElementById("current-temp").textContent =
                 data.main.temp + "°C";
               document.getElementById("temperature-result").textContent =
@@ -91,12 +88,11 @@
           xhr.send();
         }
 
-        // Fetch weather data for Pune by default when the page loads
         fetchWeatherData("Pune");
 
-        // Add an event listener to the form submission
+
         document.getElementById("search-form").addEventListener("submit", function (event) {
-          event.preventDefault(); // Prevent the form from submitting and refreshing the page
+          event.preventDefault(); 
           const city = document.getElementById("city-input").value;
           fetchWeatherData(city);
         });
