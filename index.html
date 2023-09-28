@@ -115,7 +115,7 @@
                 document.getElementById("humidity-result").textContent =
                   data.main.humidity + "%";
                 document.getElementById("wind-speed-result").textContent =
-                  data.wind.speed + (unit === "metric" ? "mph": " km/h");
+                  data.wind.speed + (unit === "metric" ?" km/h" : "mph");
               } else {
                
                 const errorMessage = `Error: ${xhr.status} - ${xhr.statusText}`;
