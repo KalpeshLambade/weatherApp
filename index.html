@@ -1,92 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./style/style.css">
-  <title>Weather App</title>
-</head>
-<body>
-  <div class="wheather-Fullpage">
-    <div class="wheather-container">
-      <div class="wheather-left-side-img">
-        <div class="wheather-city">
-          <h3 id="city-name">Mumbai</h3>
-          <h2 id="country">IN</h2>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style/style.css" />
+    <title>Weather App</title>
+  </head>
+  <body>
+    <div class="wheather-Fullpage">
+      <!-- left side  -->
+      <div class="wheather-container">
+        <div class="wheather-left-side-img">
+          <div class="wheather-city">
+            <h3 id="city-name">Delhi</h3>
+            <h2 id="country">IN</h2>
+          </div>
+          <div class="wheather-date">
+            <p class="temp" id="temperature">33.09°C</p>
+            <p id="date-time">Date and Time</p>
+          </div>
         </div>
-        <div class="wheather-date">
-          <p class="temp" id="temperature">33.09°C</p>
-          <p id="date-time">Date and Time</p>
-        </div>
-      </div>
-      <div class="wheather-right-side">
-        <div class="wheather-temp">
-          <p id="current-temp">33.09°C</p>
-        </div>
-        <div class="wheather-input">
-          <input type="search" id="city-input" placeholder="Search any city" />
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </div>
-       
 
-        <button class="search-btn">Search</button>
+        <!-- right side -->
+        <div class="wheather-right-side">
+          <div class="wheather-temp">
+            <p id="current-temp">20</p>
+          </div>
 
+          <!-- get city data -->
+          <div class="wheather-input">
+            <form id="search-form">
+              <input
+                type="search"
+                id="city-input"
+                placeholder="Search any city"
+              />
+              <input type="submit" id="search-button" value="Search">
+            </form>
+          </div>
+          <!-- end of city data -->
 
-        <div class="wheather-info-temp">
-          <p>Temperature</p>
-          <p id="temperature-result">33.09°C</p>
-        </div>
-        <div class="wheather-info-temp">
-          <p>Humidity</p>
-          <p style="margin-left: 11%" id="humidity-result">2500%</p>
-        </div>
-        <div class="wheather-info-temp">
-          <p>Wind speed</p>
-          <p id="wind-speed-result">7.2 km/hrs</p>
+          <div class="wheather-info-temp">
+            <p>Temperature</p>
+            <p id="temperature-result">09°C</p>
+          </div>
+          <div class="wheather-info-temp">
+            <p>Humidity</p>
+            <p id="humidity-result">2500%</p>
+          </div>
+          <div class="wheather-info-temp">
+            <p>Wind speed</p>
+            <p id="wind-speed-result">7.2 km/hrs</p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      // Function to fetch weather data using AJAX
-      function fetchWeatherData(city) {
-        const APIkey = "68ff20cdd3f397ada4d2f006b8577eb9"; // Replace with your OpenWeatherMap API key
-        const searchurl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIkey}&units=metric`;
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Function to fetch weather data using AJAX
+        function fetchWeatherData(city) {
+          const APIkey = "68ff20cdd3f397ada4d2f006b8577eb9"; // Replace with your OpenWeatherMap API key
+          const searchurl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${APIkey}&units=metric`;
 
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", searchurl, true);
+          const xhr = new XMLHttpRequest();
+          xhr.open("GET", searchurl, true);
 
-        xhr.onreadystatechange = function () {
-          if (xhr.readyState === 4 && xhr.status === 200) {
-            const data = JSON.parse(xhr.responseText);
-            document.getElementById("city-name").textContent = data.name;
-            document.getElementById("country").textContent = data.sys.country;
-            document.getElementById("temperature").textContent = data.main.temp + "°C";
-            document.getElementById("date-time").textContent = new Date().toLocaleString();
-            document.getElementById("city-name-result").textContent = data.name;
-            document.getElementById("current-temp").textContent = data.main.temp + "°C";
-            document.getElementById("temperature-result").textContent = data.main.temp + "°C";
-            document.getElementById("humidity-result").textContent = data.main.humidity + "%";
-            document.getElementById("wind-speed-result").textContent = data.wind.speed + " km/h";
-          }
-        };
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+              const data = JSON.parse(xhr.responseText);
+              document.getElementById("city-name").textContent = data.name;
+              document.getElementById("country").textContent = data.sys.country;
+              document.getElementById("temperature").textContent =
+                data.main.temp + "°C";
+              document.getElementById("date-time").textContent =
+                new Date().toLocaleString();
 
-        xhr.send();
-      }
+              // Update the correct elements
+              document.getElementById("current-temp").textContent =
+                data.main.temp + "°C";
+              document.getElementById("temperature-result").textContent =
+                data.main.temp + "°C";
+              document.getElementById("humidity-result").textContent =
+                data.main.humidity + "%";
+              document.getElementById("wind-speed-result").textContent =
+                data.wind.speed + " km/h";
+            }
+          };
 
-      // Fetch weather data for Mumbai by default when the page loads
-      fetchWeatherData("Mumbai");
-
-      // Add an event listener to the Search button
-      document.getElementById("search-button").addEventListener("click", function () {
-        const cityInput = document.getElementById("city-input").value;
-        if (cityInput) {
-          fetchWeatherData(cityInput);
+          xhr.send();
         }
+
+        // Fetch weather data for Pune by default when the page loads
+        fetchWeatherData("Pune");
+
+        // Add an event listener to the form submission
+        document.getElementById("search-form").addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent the form from submitting and refreshing the page
+          const city = document.getElementById("city-input").value;
+          fetchWeatherData(city);
+        });
       });
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
