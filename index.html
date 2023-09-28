@@ -149,6 +149,16 @@
 
             fetchWeatherData(city, unit);
           });
+
+        // Add an event listener for unit changes
+        document
+          .getElementById("unit")
+          .addEventListener("change", function () {
+            const city = document.getElementById("city-input").value;
+            const unit = document.getElementById("unit").value;
+
+            fetchWeatherData(city, unit);
+          });
       });
     </script>
   </body>
