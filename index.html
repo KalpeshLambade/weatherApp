@@ -88,26 +88,26 @@
               if (xhr.status === 200) {
                 const data = JSON.parse(xhr.responseText);
 
-                // Display the city name and country
+               
                 document.getElementById("city-name").textContent =
                   data.name;
                 document.getElementById("country").textContent =
                   data.sys.country;
 
-                // Display the temperature
+               
                 document.getElementById("temperature").textContent =
                   data.main.temp + (unit === "metric" ? "°C" : "°F");
 
-                // Display the weather description
+              
                 const weatherDescription = data.weather[0].description;
                 document.getElementById("weather-description").textContent =
                   weatherDescription;
 
-                // Display the date and time
+               
                 document.getElementById("date-time").textContent =
                   new Date().toLocaleString();
 
-                // Display additional weather data
+               
                 document.getElementById("current-temp").textContent =
                   data.main.temp + (unit === "metric" ? "°C" : "°F");
                 document.getElementById("temperature-result").textContent =
@@ -115,9 +115,9 @@
                 document.getElementById("humidity-result").textContent =
                   data.main.humidity + "%";
                 document.getElementById("wind-speed-result").textContent =
-                  data.wind.speed + " km/h";
+                  data.wind.speed + (unit === "metric" ? "mph": " km/h");
               } else {
-                // Handle errors here
+               
                 const errorMessage = `Error: ${xhr.status} - ${xhr.statusText}`;
                 document.getElementById("city-name").textContent = "Error";
                 document.getElementById("country").textContent = errorMessage;
@@ -150,7 +150,6 @@
             fetchWeatherData(city, unit);
           });
 
-        // Add an event listener for unit changes
         document
           .getElementById("unit")
           .addEventListener("change", function () {
